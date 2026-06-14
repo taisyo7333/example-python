@@ -1,0 +1,57 @@
+schemaVersion: 2.2.0
+metadata:
+  name: openshift-devspaces-python-jupyter
+  version: 1.0.0
+  description: "PythonとJupyter NotebookがセットアップされたVS Code開発環境"
+components:
+  - name: dev-tools
+    container:
+      image: quay.io/devfile/universal-developer-image:latest
+      memoryLimit: 4G # Jupyterでのデータ分析を考慮しメモリを多めに設定
+      memoryRequest: 1G
+      cpuLimit: 2000m
+      cpuRequest: 500m
+      mountSources: true
+      endpoints:
+        # JupyterLabをブラウザで直接開きたい場合のエンドポイント
+        - name: jupyter-lab
+          targetPort: 8888
+          exposure: public
+          protocol: http
+          secure: false
+
+  # --------------------------------------------------------
+  # VS Code 拡張機能 (Add-on) の定義
+  # --------------------------------------------------------
+  - name: vscode-python
+    plugin:
+      id: ms-python.python
+      registryUrl: https://open-vsx.org/
+
+  - name: vscode-jupyter
+    plugin:
+      id: ms-toolsai.jupyter
+      registryUrl: https://open-vsx.org/
+
+commands:
+  - id: setup-python-env
+    exec:
+      component: dev-tools
+      # pipの更新とJupyter関連パッケージ、データ分析の基本ライブラリをインストール
+      commandLine: |
+        python -m pip install --upgrade pip
+        pip install jupyterlab notebook ipykernel pandas numpy
+      workingDir: ${PROJECT_SOURCE}
+      group:
+        kind: build
+        isDefault: true
+
+  - id: run-jupyter-lab
+    exec:
+      component: dev-tools
+      # VS Code内ではなく、独立したJupyterLab UIを立ち上げるコマンド
+      commandLine: "jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token=''"
+      workingDir: ${PROJECT_SOURCE}
+      group:
+        kind: run
+        isDefault: false
