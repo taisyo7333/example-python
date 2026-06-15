@@ -1,8 +1,10 @@
 # example-python
 
+
+## Flask
 Flask で Hello Work を表示するシンプルな Web アプリです。
 
-## Setup
+### Setup
 
 ```bash
 python3 -m venv .venv
@@ -10,10 +12,10 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Run
+### Run
 
 ```bash
 python3 main.py
 ```
 
-ブラウザで http://127.0.0.1:5000/ にアクセスすると Hello Work が表示されます。
+ブラウザで http://0.0.0.0:5000/ にアクセスすると Hello Work が表示されます。
