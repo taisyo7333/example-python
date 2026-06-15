@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.get("/")
 def hello() -> str:
-    return "Hello Work"
+    return "Hello OpenShift DevSpaces"
 
 
 if __name__ == "__main__":
