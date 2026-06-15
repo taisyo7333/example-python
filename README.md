@@ -1,5 +1,14 @@
 # example-python
-Example for DevSpaces
+
+Flask で Hello Work を表示するシンプルな Web アプリです。
+
+## Setup
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
 
 ## Run
 
@@ -7,6 +16,4 @@ Example for DevSpaces
 python3 main.py
 ```
 
-## What it does
-
-This sample prints a simple sales summary and category totals using only the Python standard library.
+ブラウザで http://127.0.0.1:5000/ にアクセスすると Hello Work が表示されます。
