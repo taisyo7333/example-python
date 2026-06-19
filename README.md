@@ -2,7 +2,7 @@
 
 
 ## Flask
-Flask で Hello Work を表示するシンプルな Web アプリです。
+This is an example application to say hello world using Flask.
 
 ### Setup
 
@@ -18,4 +18,4 @@ pip install -r requirements.txt
 python3 main.py
 ```
 
-ブラウザで http://0.0.0.0:5000/ にアクセスすると Hello Work が表示されます。
+You will see "Hello World" on your browser when accessing to http://0.0.0.0:5000/
