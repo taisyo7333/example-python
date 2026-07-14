@@ -1,7 +1,7 @@
 schemaVersion: "2.2.2"
 metadata:
   name: openshift-devspaces-python-flask
-  version: 1.0.0
+  version: 1.0.1
   description: "Python environment with automatic Git repository setup for OpenShift Dev Spaces"
   displayName: Python Dev Environment
   tags:
