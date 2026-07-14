@@ -22,13 +22,13 @@ components:
           exposure: public
           protocol: http
           secure: true
-
+          
 commands:
   - id: setup-flask-app
     exec:
       label: 01-setup-flask-app
       component: dev-tools
-      workingDir: ${PROJECTS_ROOT}/python-app
+      workingDir: ${PROJECTS_ROOT}/example-python
       commandLine: |
         set -e
         python3 -m venv .venv
@@ -42,7 +42,7 @@ commands:
     exec:
       label: 02-run-flask-app
       component: dev-tools
-      workingDir: ${PROJECTS_ROOT}/python-app
+      workingDir: ${PROJECTS_ROOT}/example-python
       commandLine: |
         set -e
         source .venv/bin/activate
