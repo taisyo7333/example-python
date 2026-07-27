@@ -1,0 +1,53 @@
+schemaVersion: "2.2.2"
+metadata:
+  name: openshift-devspaces-python-flask
+  version: 1.0.1
+  description: "Python environment with automatic Git repository setup for OpenShift Dev Spaces"
+  displayName: Python Dev Environment
+  tags:
+    - Python
+    - Flask
+components:
+  - name: dev-tools
+    container:
+      image: registry.redhat.io/devspaces/udi-rhel9:3.29
+      memoryLimit: 4G
+      memoryRequest: 1G
+      cpuLimit: 2000m
+      cpuRequest: 500m
+      mountSources: true
+      endpoints:
+        - name: flask
+          targetPort: 5000
+          exposure: public
+          protocol: http
+          secure: true
+          
+commands:
+  - id: setup-flask-app
+    exec:
+      label: 01-setup-flask-app
+      component: dev-tools
+      workingDir: ${PROJECTS_ROOT}/example-python
+      commandLine: |
+        set -e
+        python3 -m venv .venv
+        source .venv/bin/activate
+        pip install -r requirements.txt
+      group:
+        kind: build
+        isDefault: true
+
+  - id: run-flask-app
+    exec:
+      label: 02-run-flask-app
+      component: dev-tools
+      workingDir: ${PROJECTS_ROOT}/example-python
+      commandLine: |
+        set -e
+        source .venv/bin/activate
+        python3 main.py
+      group:
+        kind: run
+        isDefault: true
+
