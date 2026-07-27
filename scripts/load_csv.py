@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 """Create the tasks table and load rows from data/tasks.csv."""
 
-from __future__ import annotations
-
 import csv
 import os
 import sys
