@@ -1,8 +1,7 @@
 # example-python
 
 ## Flask
-
-A simple web app that displays Hello World with Flask.
+This is an example application to say hello world using Flask.
 
 ### Setup
 
@@ -16,4 +15,4 @@ A simple web app that displays Hello World with Flask.
 ./scripts/run-flask.sh
 ```
 
-Open http://0.0.0.0:5000/ in your browser to see Hello OpenShift DevSpaces.
+You will see "Hello World" on your browser when accessing to http://0.0.0.0:5000/
