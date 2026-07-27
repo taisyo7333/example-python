@@ -9,6 +9,24 @@ metadata:
     - Flask
     - PostgreSQL
 components:
+  - name: dev-tools
+    container:
+      image: registry.redhat.io/devspaces/udi-rhel9:3.29
+      memoryLimit: 4G
+      memoryRequest: 1G
+      cpuLimit: 2000m
+      cpuRequest: 500m
+      mountSources: true
+      env:
+        - name: DATABASE_URL
+          value: postgresql://app:app@localhost:5432/appdb
+      endpoints:
+        - name: flask
+          targetPort: 5000
+          exposure: public
+          protocol: http
+          secure: true
+
   # Sidecar in the same workspace pod (reliable on Dev Spaces).
   # kubernetes+uri deployByDefault often does not apply resources.
   - name: postgres
@@ -36,24 +54,6 @@ components:
   - name: pgdata
     volume:
       size: 1Gi
-
-  - name: dev-tools
-    container:
-      image: registry.redhat.io/devspaces/udi-rhel9:3.29
-      memoryLimit: 4G
-      memoryRequest: 1G
-      cpuLimit: 2000m
-      cpuRequest: 500m
-      mountSources: true
-      env:
-        - name: DATABASE_URL
-          value: postgresql://app:app@localhost:5432/appdb
-      endpoints:
-        - name: flask
-          targetPort: 5000
-          exposure: public
-          protocol: http
-          secure: true
 
 commands:
   - id: setup-flask-app
