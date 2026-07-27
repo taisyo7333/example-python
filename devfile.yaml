@@ -9,6 +9,7 @@ metadata:
     - Flask
     - PostgreSQL
 components:
+  # Dev Tools container must be first in the list.
   - name: dev-tools
     container:
       image: registry.redhat.io/devspaces/udi-rhel9:3.29
