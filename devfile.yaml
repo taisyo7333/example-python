@@ -63,9 +63,7 @@ commands:
       workingDir: ${PROJECTS_ROOT}/example-python
       commandLine: |
         set -e
-        python3 -m venv .venv
-        source .venv/bin/activate
-        pip install -r requirements.txt
+        ./scripts/setup-flask.sh
       group:
         kind: build
         isDefault: true

@@ -12,11 +12,15 @@ In OpenShift Dev Spaces, PostgreSQL runs as a **sidecar container** in the same 
 
 ### Setup
 
+Installs **Python 3.14** via [uv](https://docs.astral.sh/uv/) (UDI default is older), creates `.venv`, and installs dependencies:
+
 ```bash
 ./scripts/setup-flask.sh
 ```
 
 Or use Dev Spaces command **01-setup-flask-app**.
+
+To pin another version: `PYTHON_VERSION=3.13 ./scripts/setup-flask.sh`.
 
 ### Load CSV data
 
