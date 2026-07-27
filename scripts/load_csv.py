@@ -12,7 +12,7 @@ from pathlib import Path
 import psycopg
 
 DATABASE_URL = os.environ.get(
-    "DATABASE_URL", "postgresql://app:app@postgres:5432/appdb"
+    "DATABASE_URL", "postgresql://app:app@localhost:5432/appdb"
 )
 CSV_PATH = Path(__file__).resolve().parent.parent / "data" / "tasks.csv"
 MAX_ATTEMPTS = 30

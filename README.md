@@ -3,11 +3,11 @@
 ## Flask + PostgreSQL
 
 A Flask app that reads task data from PostgreSQL and displays it as an HTML table.
-In OpenShift Dev Spaces, PostgreSQL is provisioned automatically from `devfile.yaml`.
+In OpenShift Dev Spaces, PostgreSQL runs as a **sidecar container** in the same workspace pod (defined in `devfile.yaml`).
 
 ### Prerequisites (Dev Spaces)
 
-1. Start the workspace so the `postgres` Kubernetes component deploys.
+1. Restart the workspace after changing `devfile.yaml` so the `postgres` container starts.
 2. Run the commands below in order.
 
 ### Setup
@@ -43,7 +43,9 @@ Open the Flask endpoint in your browser to see the task list from the database.
 Default connection string (also set in `devfile.yaml`):
 
 ```text
-DATABASE_URL=postgresql://app:app@postgres:5432/appdb
+DATABASE_URL=postgresql://app:app@localhost:5432/appdb
 ```
+
+`localhost` works because the Flask and PostgreSQL containers share the workspace pod network.
 
 Outside Dev Spaces, point `DATABASE_URL` at your local PostgreSQL instance.

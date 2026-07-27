@@ -8,7 +8,7 @@ from flask import Flask, Response
 app = Flask(__name__)
 
 DATABASE_URL = os.environ.get(
-    "DATABASE_URL", "postgresql://app:app@postgres:5432/appdb"
+    "DATABASE_URL", "postgresql://app:app@localhost:5432/appdb"
 )
 
 
