@@ -1,8 +1,14 @@
 # example-python
 
-## Flask
+## Flask + PostgreSQL
 
-A simple web app that displays Hello World with Flask.
+A Flask app that reads task data from PostgreSQL and displays it as an HTML table.
+In OpenShift Dev Spaces, PostgreSQL is provisioned automatically from `devfile.yaml`.
+
+### Prerequisites (Dev Spaces)
+
+1. Start the workspace so the `postgres` Kubernetes component deploys.
+2. Run the commands below in order.
 
 ### Setup
 
@@ -10,10 +16,34 @@ A simple web app that displays Hello World with Flask.
 ./scripts/setup-flask.sh
 ```
 
+Or use Dev Spaces command **01-setup-flask-app**.
+
+### Load CSV data
+
+```bash
+./scripts/load-csv.sh
+```
+
+Or use Dev Spaces command **02-load-csv-data**.
+
+This creates the `tasks` table and loads rows from `data/tasks.csv`.
+
 ### Run
 
 ```bash
 ./scripts/run-flask.sh
 ```
 
-Open http://0.0.0.0:5000/ in your browser to see Hello OpenShift DevSpaces.
+Or use Dev Spaces command **03-run-flask-app**.
+
+Open the Flask endpoint in your browser to see the task list from the database.
+
+### Connection
+
+Default connection string (also set in `devfile.yaml`):
+
+```text
+DATABASE_URL=postgresql://app:app@postgres:5432/appdb
+```
+
+Outside Dev Spaces, point `DATABASE_URL` at your local PostgreSQL instance.

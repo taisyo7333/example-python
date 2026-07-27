@@ -7,7 +7,13 @@ metadata:
   tags:
     - Python
     - Flask
+    - PostgreSQL
 components:
+  - name: postgres
+    kubernetes:
+      uri: deploy/postgres.yaml
+      deployByDefault: true
+
   - name: dev-tools
     container:
       image: registry.redhat.io/devspaces/udi-rhel9:3.29
@@ -16,13 +22,16 @@ components:
       cpuLimit: 2000m
       cpuRequest: 500m
       mountSources: true
+      env:
+        - name: DATABASE_URL
+          value: postgresql://app:app@postgres:5432/appdb
       endpoints:
         - name: flask
           targetPort: 5000
           exposure: public
           protocol: http
           secure: true
-          
+
 commands:
   - id: setup-flask-app
     exec:
@@ -38,9 +47,20 @@ commands:
         kind: build
         isDefault: true
 
+  - id: load-csv-data
+    exec:
+      label: 02-load-csv-data
+      component: dev-tools
+      workingDir: ${PROJECTS_ROOT}/example-python
+      commandLine: |
+        set -e
+        ./scripts/load-csv.sh
+      group:
+        kind: build
+
   - id: run-flask-app
     exec:
-      label: 02-run-flask-app
+      label: 03-run-flask-app
       component: dev-tools
       workingDir: ${PROJECTS_ROOT}/example-python
       commandLine: |
@@ -50,4 +70,3 @@ commands:
       group:
         kind: run
         isDefault: true
-
