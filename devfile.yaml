@@ -7,7 +7,9 @@ metadata:
   tags:
     - Python
     - Flask
+    - PostgreSQL
 components:
+  # Dev Tools container must be first in the list.
   - name: dev-tools
     container:
       image: registry.redhat.io/devspaces/udi-rhel9:3.29
@@ -16,13 +18,44 @@ components:
       cpuLimit: 2000m
       cpuRequest: 500m
       mountSources: true
+      env:
+        - name: DATABASE_URL
+          value: postgresql://app:app@localhost:5432/appdb
       endpoints:
         - name: flask
           targetPort: 5000
           exposure: public
           protocol: http
           secure: true
-          
+
+  # Sidecar in the same workspace pod (reliable on Dev Spaces).
+  # kubernetes+uri deployByDefault often does not apply resources.
+  - name: postgres
+    container:
+      image: registry.redhat.io/rhel9/postgresql-15:latest
+      memoryLimit: 512Mi
+      memoryRequest: 256Mi
+      cpuLimit: 500m
+      cpuRequest: 100m
+      endpoints:
+        - name: postgres
+          targetPort: 5432
+          exposure: none
+      env:
+        - name: POSTGRESQL_USER
+          value: app
+        - name: POSTGRESQL_PASSWORD
+          value: app
+        - name: POSTGRESQL_DATABASE
+          value: appdb
+      volumeMounts:
+        - name: pgdata
+          path: /var/lib/pgsql/data
+
+  - name: pgdata
+    volume:
+      size: 1Gi
+
 commands:
   - id: setup-flask-app
     exec:
@@ -31,16 +64,25 @@ commands:
       workingDir: ${PROJECTS_ROOT}/example-python
       commandLine: |
         set -e
-        python3 -m venv .venv
-        source .venv/bin/activate
-        pip install -r requirements.txt
+        ./scripts/setup-flask.sh
       group:
         kind: build
         isDefault: true
 
+  - id: load-csv-data
+    exec:
+      label: 02-load-csv-data
+      component: dev-tools
+      workingDir: ${PROJECTS_ROOT}/example-python
+      commandLine: |
+        set -e
+        ./scripts/load-csv.sh
+      group:
+        kind: build
+
   - id: run-flask-app
     exec:
-      label: 02-run-flask-app
+      label: 03-run-flask-app
       component: dev-tools
       workingDir: ${PROJECTS_ROOT}/example-python
       commandLine: |
@@ -50,4 +92,3 @@ commands:
       group:
         kind: run
         isDefault: true
-
