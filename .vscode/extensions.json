@@ -1,5 +1,6 @@
 {
     "recommendations": [
+      "cnshenj.vscode-task-manager",
       "ms-ceintl.vscode-language-pack-ja",
       "ms-python.vscode-pylance",
       "ms-python.python",
