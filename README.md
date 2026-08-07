@@ -1,6 +1,6 @@
 # example-python
 
-[https://devspaces.apps.rosa.ihjzx-45uit-hus.jbid.p3.openshiftapps.com#https://github.com/taisyo7333/example-python/tree/git-provider-github](https://devspaces.apps.rosa.ihjzx-45uit-hus.jbid.p3.openshiftapps.com#https://github.com/taisyo7333/example-python/tree/git-provider-github)
+[![Contribute](https://www.eclipse.org/che/contribute.svg)](https://devspaces.apps.rosa.ihjzx-45uit-hus.jbid.p3.openshiftapps.com#https://github.com/taisyo7333/example-python/tree/git-provider-github)
 
 ## Flask + PostgreSQL
 
