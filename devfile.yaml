@@ -92,3 +92,23 @@ commands:
       group:
         kind: run
         isDefault: true
+
+  # workaround for podman path broken by AI injection
+  - id: fix-podman-path
+    exec:
+      component: dev-tools
+      commandLine: |
+        mkdir -p "$HOME/.local/bin"
+        if [ -x /usr/bin/podman.orig ]; then
+          ln -sf /usr/bin/podman.orig "$HOME/.local/bin/podman"
+        fi
+        # fix path for podman broken by AI injection
+        for rc in "$HOME/.bashrc" "$HOME/.profile"; do
+          touch "$rc"
+          grep -q 'HOME/.local/bin' "$rc" 2>/dev/null || \
+            echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$rc"
+        done
+      workingDir: ${PROJECT_SOURCE}
+events:
+  postStart:
+    - fix-podman-path
