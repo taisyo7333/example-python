@@ -88,10 +88,44 @@ commands:
       commandLine: |
         set -e
         source .venv/bin/activate
+        export FLASK_DEBUG="${FLASK_DEBUG:-1}"
         python3 main.py
       group:
         kind: run
         isDefault: true
+
+  - id: podman-build
+    exec:
+      label: 04-podman-build
+      component: dev-tools
+      workingDir: ${PROJECTS_ROOT}/example-python
+      commandLine: |
+        set -e
+        ./scripts/podman-build.sh
+      group:
+        kind: build
+
+  - id: podman-run
+    exec:
+      label: 05-podman-run
+      component: dev-tools
+      workingDir: ${PROJECTS_ROOT}/example-python
+      commandLine: |
+        set -e
+        ./scripts/podman-run.sh
+      group:
+        kind: run
+
+  - id: podman-push
+    exec:
+      label: 06-podman-push
+      component: dev-tools
+      workingDir: ${PROJECTS_ROOT}/example-python
+      commandLine: |
+        set -e
+        ./scripts/podman-push.sh
+      group:
+        kind: build
 
   # workaround for podman path broken by AI injection
   - id: fix-podman-path

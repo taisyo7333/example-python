@@ -53,3 +53,40 @@ DATABASE_URL=postgresql://app:app@localhost:5432/appdb
 `localhost` works because the Flask and PostgreSQL containers share the workspace pod network.
 
 Outside Dev Spaces, point `DATABASE_URL` at your local PostgreSQL instance.
+
+### Container image (podman)
+
+The Flask image uses the same **Python 3.14** (`ubi9/python-314`) as the development environment.
+
+Build, run, and push the Flask image to the OpenShift internal registry.
+
+Before building, log in to pull the base image from `registry.redhat.io`:
+
+```bash
+podman login registry.redhat.io
+```
+
+```bash
+./scripts/podman-build.sh
+./scripts/podman-run.sh
+./scripts/podman-push.sh
+```
+
+Or use Dev Spaces commands **04-podman-build**, **05-podman-run**, **06-podman-push**.
+
+Default image:
+
+```text
+image-registry.openshift-image-registry.svc:5000/<namespace>/example-python-flask:latest
+```
+
+Override with `IMAGE_TAG`, `NAMESPACE`, `FULL_IMAGE`, or `DATABASE_URL` as needed.
+
+`./scripts/podman-run.sh` uses `--network=host` so the Flask container shares the workspace network with the postgres sidecar. That makes the default `DATABASE_URL` (`localhost:5432`) work the same way as `./scripts/run-flask.sh`. Port publish (`-p`) is not used; Flask listens on port 5000 on the workspace network.
+
+Without a reachable Postgres, `/` returns HTTP 503. For a Postgres that is not on the workspace host network, override `DATABASE_URL`, for example:
+
+```bash
+DATABASE_URL=postgresql://app:app@host.containers.internal:5432/appdb ./scripts/podman-run.sh
+```
+
