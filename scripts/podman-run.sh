@@ -9,10 +9,10 @@ NAMESPACE="${NAMESPACE:-$(oc project -q)}"
 REGISTRY="${REGISTRY:-image-registry.openshift-image-registry.svc:5000}"
 FULL_IMAGE="${FULL_IMAGE:-${REGISTRY}/${NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG}}"
 DATABASE_URL="${DATABASE_URL:-postgresql://app:app@localhost:5432/appdb}"
-HOST_PORT="${HOST_PORT:-5000}"
 
-podman run --rm \
-  -p "${HOST_PORT}:5000" \
+# Use host network so localhost:5432 reaches the Dev Spaces postgres sidecar
+# (default bridge network makes localhost the Flask container itself).
+podman run --rm --network=host \
   -e "DATABASE_URL=${DATABASE_URL}" \
   -e "FLASK_DEBUG=${FLASK_DEBUG:-0}" \
   "${FULL_IMAGE}"

@@ -76,7 +76,9 @@ image-registry.openshift-image-registry.svc:5000/<namespace>/example-python-flas
 
 Override with `IMAGE_TAG`, `NAMESPACE`, `FULL_IMAGE`, or `DATABASE_URL` as needed.
 
-`podman run` starts Flask only. Without a reachable Postgres, `/` returns HTTP 503. Pass a reachable URL, for example:
+`./scripts/podman-run.sh` uses `--network=host` so the Flask container shares the workspace network with the postgres sidecar. That makes the default `DATABASE_URL` (`localhost:5432`) work the same way as `./scripts/run-flask.sh`. Port publish (`-p`) is not used; Flask listens on port 5000 on the workspace network.
+
+Without a reachable Postgres, `/` returns HTTP 503. For a Postgres that is not on the workspace host network, override `DATABASE_URL`, for example:
 
 ```bash
 DATABASE_URL=postgresql://app:app@host.containers.internal:5432/appdb ./scripts/podman-run.sh
