@@ -56,9 +56,15 @@ Outside Dev Spaces, point `DATABASE_URL` at your local PostgreSQL instance.
 
 ### Container image (podman)
 
-Flask イメージも開発環境と同じ **Python 3.14**（`ubi9/python-314`）を使います。
+The Flask image uses the same **Python 3.14** (`ubi9/python-314`) as the development environment.
 
 Build, run, and push the Flask image to the OpenShift internal registry.
+
+Before building, log in to pull the base image from `registry.redhat.io`:
+
+```bash
+podman login registry.redhat.io
+```
 
 ```bash
 ./scripts/podman-build.sh
